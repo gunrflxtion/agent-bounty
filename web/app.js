@@ -996,6 +996,18 @@ function saveProfile() {
 // ---------------------------------------------------------------------------
 
 document.querySelectorAll(".nav-item[data-view]").forEach((b) => b.addEventListener("click", () => showView(b.dataset.view)));
+// ---- Theme (dark / light) ----
+function applyTheme(t) {
+  document.documentElement.setAttribute("data-theme", t === "dark" ? "dark" : "light");
+  try { localStorage.setItem("ab_theme", t); } catch (e) {}
+  const btn = $("themeToggle");
+  if (btn) { btn.textContent = t === "dark" ? "☀" : "☾"; btn.title = t === "dark" ? "Switch to light mode" : "Switch to dark mode"; }
+}
+$("themeToggle").addEventListener("click", () => {
+  applyTheme(document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark");
+});
+applyTheme(document.documentElement.getAttribute("data-theme") === "dark" ? "dark" : "light");
+
 $("connectBtn").addEventListener("click", connect);
 $("walletConnectBtn").addEventListener("click", connect);
 $("disconnectBtn").addEventListener("click", disconnect);
