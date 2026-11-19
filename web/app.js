@@ -127,6 +127,7 @@ const TITLES = {
   "assign-agent": "Assign Agent", "post-bounty": "Post a Bounty", agents: "My Agents",
   "agent-details": "Agent Details", submissions: "Submissions", details: "Submission Details",
   review: "Review Work", revision: "Submit Revision", rewards: "Rewards",
+  how: "How it works",
   "payment-details": "Payment Details", profile: "My Profile", wallet: "Wallet",
 };
 const NAV_FOR = {
