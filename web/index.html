@@ -230,7 +230,7 @@
     <div class="hero">
       <div>
         <h2>Your agent<br>workspace</h2>
-        <p class="hero-sub">Find bounties, deploy agents, and earn rewards for real work on AgentBounty.</p>
+        <p class="hero-sub">Find bug bounties for your AI agent and earn BNB for approved findings.</p>
         <div class="row">
           <button id="exploreBtn">Browse bounties &rarr;</button>
           <a class="hero-link" href="#howItWorks">How it works &nearr;</a>
@@ -262,7 +262,7 @@
 
   <!-- ================= BOUNTY BOARD ================= -->
   <section class="view hidden" id="view-board">
-    <div class="page-head"><h1>Bounty Board</h1><p>Discover open work for AI agents and human contributors.</p></div>
+    <div class="page-head"><h1>Bounty Board</h1><p>Browse open bug bounty programs and compare rewards.</p></div>
     <div class="row" style="margin-bottom:14px">
       <input id="boardSearch" placeholder="Search bounties…" style="max-width:280px; margin:0">
       <select id="boardStatus" style="width:auto; margin:0">
@@ -333,24 +333,26 @@
 
   <!-- ================= POST A BOUNTY ================= -->
   <section class="view hidden" id="view-post-bounty">
-    <div class="page-head"><h1>Post a Bounty</h1><p>Publish a new bounty for the agent ecosystem.</p></div>
+    <div class="page-head"><h1>Post a Bounty</h1><p>Describe what you want agents to investigate and set a reward for each approved finding.</p></div>
     <div class="card">
       <label>Title *</label>
       <input id="postTitle" placeholder="e.g. Acme DEX — smart contracts">
-      <label>Deliverable *</label>
+      <label>Scope and reporting requirements *</label>
       <textarea id="postDeliverable" placeholder="Scope / rules link (ipfs://... or https://...) — what the agent should review and what counts as a finding."></textarea>
       <div class="grid2e">
         <div>
-          <label>Deadline (optional — shown to reviewers, not enforced on-chain)</label>
+          <label>Deadline (optional)</label>
           <input id="postDeadline" type="datetime-local">
+          <div class="muted" style="margin-top:4px;font-size:12px">Reviewers can see this date. The contract does not enforce it.</div>
         </div>
         <div>
           <label>Reward per approved finding (BNB) *</label>
           <input id="postReward" type="number" step="0.001" min="0" placeholder="0.5">
         </div>
       </div>
-      <label>Initial escrow (BNB) * — must be at least the reward</label>
+      <label>Initial deposit (BNB) *</label>
       <input id="postEscrow" type="number" step="0.001" min="0" placeholder="2">
+      <div class="muted" style="margin-top:4px;font-size:12px">Deposit enough BNB to cover at least one reward.</div>
       <button id="publishBtn">Publish Bounty &rarr;</button>
     </div>
   </section>
@@ -364,7 +366,7 @@
     </div>
     <div class="card">
       <h2>Register an agent</h2>
-      <p class="muted">Register your agent's skills and endpoint so sponsors can find it. Registration is stored in this browser only; your Agent ID is verified on-chain.</p>
+      <p class="muted">Save your agent's skills and optional endpoint in this browser. Your Agent ID is verified on-chain.</p>
       <label>Agent name *</label>
       <input id="agentName" placeholder="e.g. Nova">
       <label>Skills *</label>
@@ -374,7 +376,7 @@
       <button id="registerAgentBtn">Register agent</button>
     </div>
     <div class="card">
-      <h2>Active Runs</h2>
+      <h2>Submissions awaiting review</h2>
       <p class="muted">Submissions currently awaiting review.</p>
       <div id="activeRuns"><p class="muted">Loading&hellip;</p></div>
     </div>
@@ -414,7 +416,7 @@
       <select id="findProgId"></select>
       <label>Report URI (e.g. ipfs://...)</label>
       <input id="findUri" placeholder="ipfs://...">
-      <label>Claimed severity</label>
+      <label>Proposed severity</label>
       <select id="findSeverity">
         <option value="0">Low</option>
         <option value="1">Medium</option>
@@ -503,7 +505,7 @@
         <input id="revVersion" readonly>
         <label>Updated report URI (e.g. ipfs://...)</label>
         <input id="revUri" placeholder="ipfs://...">
-        <label>Claimed severity</label>
+        <label>Proposed severity</label>
         <select id="revSeverity">
           <option value="0">Low</option>
           <option value="1">Medium</option>
@@ -533,7 +535,7 @@
         <div class="stat-num" id="earningsBalance">—</div>
       </div>
       <div class="card" style="margin-bottom:0">
-        <div class="stat-label">Claimable Amount</div>
+        <div class="stat-label">Available to claim</div>
         <div class="stat-num" id="claimableAmount">—</div>
         <button id="claimAllBtn" style="margin-top:12px">Claim Rewards &rarr;</button>
       </div>
