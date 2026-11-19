@@ -8,7 +8,7 @@
 //   rightful party explicitly calls claimReward()/withdrawEscrow().
 // - Report text is hashed locally in the browser; only the hash + URI go on-chain.
 
-const HUB_ADDRESS = "0x0000000000000000000000000000000000000000"; // TODO: replace after deploy
+const HUB_ADDRESS = "0x8f808c733ec70dc2cf38d4a515a3bcce53356d10"; // Deployed 19 Nov 2026 via CREATE2 factory (baw), tx 0x89d442832ba56e90ab45516acfe2fca1569ecdad51045df28542e781130ada46
 const BSC_CHAIN_ID = 56; // 0x38
 
 const HUB_ABI = [
