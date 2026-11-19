@@ -1011,7 +1011,6 @@ applyTheme(document.documentElement.getAttribute("data-theme") === "dark" ? "dar
 $("connectBtn").addEventListener("click", connect);
 $("walletConnectBtn").addEventListener("click", connect);
 $("disconnectBtn").addEventListener("click", disconnect);
-$("refreshBtn").addEventListener("click", async () => { if (!contracts()) return; await loadChainData(); renderAll(); setStatus("Refreshed.", "ok"); });
 $("exploreBtn").addEventListener("click", () => showView("board"));
 $("accountLabel").addEventListener("click", () => showView("wallet"));
 $("publishBtn").addEventListener("click", publishBounty);
