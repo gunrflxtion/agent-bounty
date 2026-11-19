@@ -1046,13 +1046,12 @@ if (window.ethereum) {
     $("boardPreview").innerHTML = '<p class="muted">Failed to load ethers.js from CDN — check your connection.</p>';
     return;
   }
-  provider = new ethers.JsonRpcProvider("https://bsc-dataseed.binance.org/");
-  if (!contracts()) return;
-  try {
-    await loadChainData();
-    renderAll();
-  } catch (err) {
-    console.error(err);
-    setStatus("Could not load on-chain data: " + (err.message || err), "error");
+  const RPC_URLS = ["https://bsc-dataseed.binance.org/", "https://bsc.publicnode.com"];
+  let loaded = false;
+  for (const url of RPC_URLS) {
+    provider = new ethers.JsonRpcProvider(url);
+    if (!contracts()) return;
+    try { await loadChainData(); loaded = true; break; } catch (err) { console.error("RPC failed:", url, err); }
   }
+  if (loaded) { renderAll(); } else { setStatus("Could not load on-chain data — check your connection and reload the page.", "error"); }
 })();
