@@ -44,7 +44,7 @@
             border-bottom:1px solid var(--line); display:flex; align-items:center; gap:28px;
             padding:14px 32px; }
   .brand { display:flex; align-items:center; gap:10px; }
-  .brand-logo { width:36px; height:36px; border-radius:50%; display:block; overflow:hidden; background-image:var(--logo-static); background-size:150%; background-position:center; background-repeat:no-repeat; }
+  .brand-logo { width:36px; height:36px; border-radius:50%; display:block; overflow:hidden; background-image:var(--logo-anim); background-size:150%; background-position:center; background-repeat:no-repeat; }
   /* ---- Splash (workspace opening) ---- */
   #splash { position:fixed; inset:0; z-index:999; display:flex; align-items:center; justify-content:center;
             background:var(--bg); animation:splashOut .5s ease 2.4s forwards; }
@@ -53,7 +53,7 @@
   #splash .splash-logo { width:180px; height:180px; border-radius:24px; display:block; overflow:hidden; background-color:var(--logo-bg); background-image:var(--logo-anim); background-size:contain; background-position:center; background-repeat:no-repeat; }
   @media (prefers-reduced-motion:reduce) {
     #splash { animation:splashOut 0s ease .8s forwards; }
-    .hero-logo, .splash-logo { background-image:var(--logo-static); }
+    .hero-logo, .splash-logo, .brand-logo { background-image:var(--logo-static); }
   }
   .tabs { display:flex; gap:4px; margin:0 auto; }
   .nav-item { padding:9px 14px; border-radius:8px; color:var(--text); cursor:pointer; font-size:14px;
@@ -208,7 +208,7 @@
     <button id="themeToggle" class="icon-btn" title="Switch to dark mode">&#9789;</button>
     <button id="refreshBtn" class="icon-btn" title="Refresh">&#8635;</button>
     <button id="connectBtn" class="wallet-pill">Connect Wallet</button>
-    <button class="icon-btn" title="My Profile" onclick="showView('profile')">&#128100;</button>
+    <button class="icon-btn" title="My Profile" onclick="showView('profile')"><svg viewBox="0 0 24 24" width="20" height="20" fill="#FF7A00" aria-hidden="true"><path d="M12 12c2.2 0 4-1.8 4-4s-1.8-4-4-4-4 1.8-4 4 1.8 4 4 4zm0 2c-2.7 0-8 1.3-8 4v2h16v-2c0-2.7-5.3-4-8-4z"/></svg></button>
   </div>
   <span id="accountLabel" style="display:none">Not connected</span>
   <span id="viewTitle" style="display:none">Overview</span>
