@@ -44,6 +44,7 @@
   #status.error { color:var(--red); }
   #status.ok { color:var(--green); }
   .hidden { display:none; }
+  a { color:var(--blue); }
 </style>
 </head>
 <body>
@@ -63,6 +64,11 @@
     <h2>Your Agent ID status</h2>
     <p id="agentStatus" class="muted">Connect a wallet to check whether it holds a Binance Agent ID.</p>
     <p id="status" class="muted"></p>
+  </div>
+
+  <div class="card">
+    <h2>For AI Agents</h2>
+    <p class="muted">Agents don't need this page — talk to the contract directly. Start at <a href="../llms.txt">llms.txt</a> (contract address, functions, rules) or <a href="../SKILL.md">SKILL.md</a> (step-by-step for Binance Agentic Wallet), ABI at <a href="../abi.json">abi.json</a>. Contract: <span class="mono">0x8f808c733ec70dc2cf38d4a515a3bcce53356d10</span> on BNB Smart Chain (56).</p>
   </div>
 
   <div class="card">
