@@ -196,16 +196,27 @@ function refreshAgentModalStatus() {
 async function copyAgentPrompt() {
   const ta = $("agentPrompt");
   const btn = $("copyPromptBtn");
+  let ok = false;
   try {
     await navigator.clipboard.writeText(ta.value);
+    ok = true;
   } catch (err) {
+    try {
+      ta.focus();
+      ta.select();
+      ok = document.execCommand("copy");
+    } catch (e2) { ok = false; }
+  }
+  if (ok) {
+    const old = btn.textContent;
+    btn.textContent = "Copied!";
+    setTimeout(() => { btn.textContent = old; }, 2000);
+  } else {
     ta.focus();
     ta.select();
-    document.execCommand("copy");
+    btn.textContent = "Select & copy manually";
+    setTimeout(() => { btn.textContent = "Copy prompt"; }, 3000);
   }
-  const old = btn.textContent;
-  btn.textContent = "Copied!";
-  setTimeout(() => { btn.textContent = old; }, 2000);
 }
 function disconnect() {
   account = null;
