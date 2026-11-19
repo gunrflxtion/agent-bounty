@@ -223,8 +223,9 @@ async function refreshAgentStatus() {
 // ---------------------------------------------------------------------------
 
 async function loadChainData() {
-  const pc = Number(await hubRead.programCount());
-  const fc = Number(await hubRead.findingCount());
+  const [pcRaw, fcRaw] = await Promise.all([hubRead.programCount(), hubRead.findingCount()]);
+  const pc = Number(pcRaw);
+  const fc = Number(fcRaw);
   programs = [];
   for (let i = 1; i <= pc; i++) {
     const p = await hubRead.getProgram(i);
@@ -235,8 +236,7 @@ async function loadChainData() {
     const f = await hubRead.getFinding(i);
     findings.push({ id: Number(f.id), programId: Number(f.programId), agent: f.agent, reportHash: f.reportHash, reportURI: f.reportURI, severity: Number(f.severity), status: Number(f.status), claimed: f.claimed, submittedAt: null });
   }
-  await loadTimestamps();
-  await loadClaims();
+  await Promise.all([loadTimestamps(), loadClaims()]);
 }
 
 async function loadTimestamps() {
@@ -309,7 +309,7 @@ async function fetchBrief(uri) {
 function renderAll() {
   renderStats();
   renderBoardPreview();
-  renderAgentsPanel();
+  renderActivity();
   renderBoard();
   renderAgentsView();
   renderActiveRuns();
@@ -349,16 +349,28 @@ function renderBoardPreview() {
     : open.map(bountyRowHtml).join("");
 }
 
-function renderAgentsPanel() {
-  const agents = allAgents().slice(0, 3);
-  $("agentsPanel").innerHTML = agents.length === 0
-    ? '<p class="muted">No agents yet. Connect a wallet and submit the first finding.</p>'
-    : agents.map((a) => `<div class="agent-row" onclick="showAgentDetails('${a.address}')">
-        <div class="agent-avatar">${esc((a.name || a.address).slice(0, 1).toUpperCase())}</div>
-        <div><div class="agent-name">${a.name ? esc(a.name) : short(a.address)}</div>
-        <div class="muted"><span class="dot ${a.pending ? "" : "gray"}"></span>${a.pending ? "Working" : "Available"}</div></div>
-        <span class="chev" style="margin-left:auto">&rsaquo;</span>
-      </div>`).join("");
+function relTime(ts) {
+  if (!ts) return "—";
+  const s = Math.floor(Date.now() / 1000) - ts;
+  if (s < 60) return "just now";
+  if (s < 3600) return Math.floor(s / 60) + " min ago";
+  if (s < 86400) return Math.floor(s / 3600) + " hr ago";
+  return fmtDate(ts);
+}
+
+function renderActivity() {
+  const items = [];
+  for (const f of findings) {
+    if (f.submittedAt) items.push({ ts: f.submittedAt, icon: "➤", html: `<strong>${esc(agentDisplay(f.agent))}</strong> submitted a solution for <a href="#" onclick="showDetails(${f.id}); return false;">${esc((programById(f.programId) || {}).title || "Program #" + f.programId)}</a>.` });
+  }
+  for (const c of claims) {
+    if (c.timestamp) items.push({ ts: c.timestamp, icon: "◉", html: `<strong>${esc(agentDisplay(c.agent))}</strong> claimed <strong>${fmtBnb(c.amount)}</strong> for <a href="#" onclick="showPaymentDetails('${c.txHash}'); return false;">${esc((programById(c.programId) || {}).title || "Program #" + c.programId)}</a>.` });
+  }
+  items.sort((a, b) => b.ts - a.ts);
+  const top = items.slice(0, 5);
+  $("activityFeed").innerHTML = top.length === 0
+    ? '<p class="muted">No activity yet. Activity appears here when agents submit and claim.</p>'
+    : top.map((it) => `<div class="activity-row"><div class="activity-icon">${it.icon}</div><div style="flex:1">${it.html}</div><span class="muted" style="white-space:nowrap">${relTime(it.ts)}</span></div>`).join("");
 }
 
 function renderBoard() {
