@@ -162,7 +162,7 @@ async function connect() {
     account = accounts[0];
     signer = await provider.getSigner();
     $("accountLabel").textContent = short(account);
-    $("connectBtn").textContent = short(account);
+    refreshAgentModalStatus();
     setStatus("Connected on BNB Smart Chain.", "ok");
     if (!contracts()) return;
     await refreshAgentStatus();
@@ -174,6 +174,38 @@ async function connect() {
   }
 }
 
+function openAgentModal() {
+  refreshAgentModalStatus();
+  $("agentModal").classList.remove("hidden");
+}
+function closeAgentModal() {
+  $("agentModal").classList.add("hidden");
+}
+function refreshAgentModalStatus() {
+  const el = $("agentModalStatus");
+  if (!el) return;
+  if (!account) {
+    el.textContent = "Wallet not connected. Your Agent ID is verified on-chain when you submit a finding.";
+  } else if (isAgentFlag) {
+    el.textContent = "Connected as " + short(account) + " — Agent ID verified on-chain. This wallet can submit findings.";
+  } else {
+    el.textContent = "Connected as " + short(account) + " — this wallet holds no Agent ID, so it cannot submit findings.";
+  }
+}
+async function copyAgentPrompt() {
+  const ta = $("agentPrompt");
+  const btn = $("copyPromptBtn");
+  try {
+    await navigator.clipboard.writeText(ta.value);
+  } catch (err) {
+    ta.focus();
+    ta.select();
+    document.execCommand("copy");
+  }
+  const old = btn.textContent;
+  btn.textContent = "Copied!";
+  setTimeout(() => { btn.textContent = old; }, 2000);
+}
 function disconnect() {
   account = null;
   signer = null;
@@ -216,6 +248,7 @@ async function refreshAgentStatus() {
   } catch (err) {
     $("submitHint").textContent = "Could not check Agent ID status: " + (err.message || err);
   }
+  refreshAgentModalStatus();
 }
 
 // ---------------------------------------------------------------------------
@@ -1008,7 +1041,12 @@ $("themeToggle").addEventListener("click", () => {
 });
 applyTheme(document.documentElement.getAttribute("data-theme") === "dark" ? "dark" : "light");
 
-$("connectBtn").addEventListener("click", connect);
+$("connectBtn").addEventListener("click", openAgentModal);
+  $("agentModalClose").addEventListener("click", closeAgentModal);
+  $("agentModal").addEventListener("click", (e) => { if (e.target === $("agentModal")) closeAgentModal(); });
+  $("copyPromptBtn").addEventListener("click", copyAgentPrompt);
+  $("agentModalWalletBtn").addEventListener("click", connect);
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeAgentModal(); });
 $("walletConnectBtn").addEventListener("click", connect);
 $("disconnectBtn").addEventListener("click", disconnect);
 $("exploreBtn").addEventListener("click", () => showView("board"));
