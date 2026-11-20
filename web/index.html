@@ -51,6 +51,10 @@
   #splash.hide { opacity:0; visibility:hidden; pointer-events:none; }
   @keyframes splashOut { to { opacity:0; visibility:hidden; } }
   #splash .splash-logo { width:180px; height:180px; border-radius:24px; display:block; background-color:var(--logo-bg); object-fit:contain; }
+  @media (prefers-reduced-motion:no-preference) {
+    #splash .splash-logo, .hero-img .hero-logo { animation:logoFloat 3s ease-in-out infinite; }
+  }
+  @keyframes logoFloat { 0%,100% { transform:translateY(0); } 50% { transform:translateY(-6px); } }
   @media (prefers-reduced-motion:reduce) {
     #splash { animation:splashOut 0s ease .8s forwards; }
     .brand-logo { background-image:var(--logo-static); }
